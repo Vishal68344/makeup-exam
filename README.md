@@ -50,3 +50,24 @@ more details about the features.
 
 For discussions and questions join us on the [Open Policy Agent Slack](https://slack.openpolicyagent.org/)
 in the `#opa-conftest` channel.
+# Makeup Exam DevOps Platform
+
+## Features
+
+- Linux Administration
+- Git Workflow
+- GitHub Actions CI/CD
+- SonarQube Integration
+- OPA Policy Validation
+
+## Branches
+
+- development
+- staging
+- production
+
+## Security
+
+- OPA Validation
+- SonarQube Scanning
+- Secure Deployments
