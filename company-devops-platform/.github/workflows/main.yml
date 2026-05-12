@@ -1,0 +1,67 @@
+name: DevOps-CI-CD-Pipeline
+
+on:
+  push:
+    branches:
+      - development
+      - production
+
+jobs:
+
+  build-test-security:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout Source
+      uses: actions/checkout@v4
+
+    - name: Build Stage
+      run: |
+        echo "Building Application"
+
+    - name: Test Stage
+      run: |
+        echo "Running Tests"
+
+    - name: Install Conftest
+      run: |
+
+        wget https://github.com/open-policy-agent/conftest/releases/download/v0.45.0/conftest_0.45.0_Linux_x86_64.tar.gz
+
+        tar xzf conftest_0.45.0_Linux_x86_64.tar.gz
+
+        sudo mv conftest /usr/local/bin
+
+    - name: OPA Policy Validation
+      run: |
+
+        conftest test deployments/deployment.yaml --policy policies/
+
+    - name: SonarQube Scan
+      uses: SonarSource/sonarqube-scan-action@master
+
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+
+      with:
+        name: deployment-artifacts
+        path: artifacts/
+
+    - name: Production Deployment
+      if: github.ref == 'refs/heads/production'
+
+      run: |
+        echo "Deploying Application"
+
+    - name: Rollback Deployment
+      if: failure()
+
+      run: |
+        echo "Deployment Failed"
+        echo "Rolling Back Deployment"
