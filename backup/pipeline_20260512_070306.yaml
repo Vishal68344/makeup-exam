@@ -1,0 +1,29 @@
+name: DevOps-CI-CD
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Build
+      run: echo "Building Application"
+
+    - name: Test
+      run: echo "Testing Application"
+
+    - name: Security Validation
+      run: echo "Security Validation"
+
+    - name: Deploy
+      run: echo "Deploying Application"
